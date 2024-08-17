@@ -1,0 +1,21 @@
+{
+  "pods": [
+    {"name": "pod1", "namespace": "default", "cpu_request": 100, "cpu_limit": 200, "memory_request": 256, "memory_limit": 512},
+    {"name": "pod2", "namespace": "default", "cpu_request": 150, "cpu_limit": 300, "memory_request": 512, "memory_limit": 1024},
+    {"name": "pod3", "namespace": "default", "cpu_request": 200, "cpu_limit": 400, "memory_request": 1024, "memory_limit": 2048},
+    {"name": "pod4", "namespace": "default", "cpu_request": 50, "cpu_limit": 100, "memory_request": 128, "memory_limit": 256},
+    {"name": "pod5", "namespace": "default", "cpu_request": 300, "cpu_limit": 600, "memory_request": 768, "memory_limit": 1536},
+    {"name": "pod6", "namespace": "default", "cpu_request": 80, "cpu_limit": 160, "memory_request": 256, "memory_limit": 512},
+    {"name": "pod7", "namespace": "default", "cpu_request": 120, "cpu_limit": 240, "memory_request": 512, "memory_limit": 1024},
+    {"name": "pod8", "namespace": "default", "cpu_request": 90, "cpu_limit": 180, "memory_request": 128, "memory_limit": 256},
+    {"name": "pod9", "namespace": "default", "cpu_request": 110, "cpu_limit": 220, "memory_request": 512, "memory_limit": 1024},
+    {"name": "pod10", "namespace": "default", "cpu_request": 140, "cpu_limit": 280, "memory_request": 256, "memory_limit": 512}
+  ],
+  "nodes": [
+    {"name": "node1", "cpu_capacity": 1000, "memory_capacity": 2048},
+    {"name": "node2", "cpu_capacity": 1500, "memory_capacity": 4096},
+    {"name": "node3", "cpu_capacity": 1200, "memory_capacity": 3072},
+    {"name": "node4", "cpu_capacity": 2000, "memory_capacity": 8192},
+    {"name": "node5", "cpu_capacity": 800, "memory_capacity": 2048}
+  ]
+}
