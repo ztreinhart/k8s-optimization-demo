@@ -1,49 +1,70 @@
 import argparse
 import json
 import models
+import scheduler
 
-# Set up command line arguments
-arg_parser = argparse.ArgumentParser()
-arg_parser.add_argument('input_file', help='Path to JSON input file')
-args = arg_parser.parse_args()
 
-# Dictionary for our parsed data
-data = {}
+# parse_cli_args will parse the CLI arguments and return the ones we need individually.
+def parse_cli_args():
+    arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument('input_file', help='Path to JSON input file')
+    arg_parser.add_argument("-s", "--schedule", action="store_true", help="Enable pod scheduling")
+    arg_parser.add_argument("-v", "--verbose", action="store_true", help="Show verbose scheduler output")
+    args = arg_parser.parse_args()
+    return args.input_file, args.schedule, args.verbose
 
-# Open the file and load its contents as JSON
-try:
-    with open(args.input_file, 'r') as file:
-        data = json.load(file, object_hook=models.podNodeDecoder)
+# load_input_file will load the JSON file specified by filename. It utilizes models.pod_node_decoder
+# to parse the input data into a list of Pods and a list of Nodes.
+def load_input_file(filename):
+    try:
+        with open(filename, 'r') as file:
+            data = json.load(file, object_hook=models.pod_node_decoder)
+            return data['pods'], data['nodes']
+    except FileNotFoundError:
+        print(f"Error: File '{filename}' not found.")
+        exit(1)
+    except json.JSONDecodeError:
+        print(f"Error: File '{filename}' contains invalid JSON.")
+        exit(1)
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+        exit(1)
 
-except FileNotFoundError:
-    print(f"Error: File '{args.input_file}' not found.")
-    exit(1)
-except json.JSONDecodeError:
-    print(f"Error: File '{args.input_file}' contains invalid JSON.")
-    exit(1)
-except Exception as e:
-    print(f"An error occurred: {str(e)}")
-    exit(1)
 
-# Parsed data
-pods = data['pods']
-nodes = data['nodes']
+# print_pod_summary will print a summary of the list of pods passed to it onto the console
+def print_pod_summary(pods):
+    print(f"Number of pods: {len(pods)}\n")
 
-# Summarize pod data
-print(f"Number of pods: {len(pods)}\n")
+    total_CPU_reqs = 0
+    total_CPU_limits = 0
+    total_mem_reqs = 0
+    total_mem_limits = 0
 
-total_CPU_reqs = 0
-total_CPU_limits = 0
-total_mem_reqs = 0
-total_mem_limits = 0
+    for pod in pods:
+        total_CPU_reqs += pod.cpu_request
+        total_CPU_limits += pod.cpu_limit
+        total_mem_reqs += pod.memory_request
+        total_mem_limits += pod.memory_limit
 
-for pod in pods:
-    total_CPU_reqs += pod.cpu_request
-    total_CPU_limits += pod.cpu_limit
-    total_mem_reqs += pod.memory_request
-    total_mem_limits += pod.memory_limit
+    print(f"Total CPU requests: {total_CPU_reqs}")
+    print(f"Total CPU limits: {total_CPU_limits}\n")
+    print(f"Total Memory requests: {total_mem_reqs}")
+    print(f"Total Memory limits: {total_mem_limits}")
 
-print(f"Total CPU requests: {total_CPU_reqs}")
-print(f"Total CPU limits: {total_CPU_limits}\n")
-print(f"Total Memory requests: {total_mem_reqs}")
-print(f"Total Memory limits: {total_mem_limits}")
+def main():
+    # Parse the command line arguments to the input file name
+    input_file, schedule, verbose = parse_cli_args()
+
+    # Load and parse the input file
+    pods, nodes = load_input_file(input_file)
+
+    # Print the pod summary
+    print_pod_summary(pods)
+
+    # If the 'schedule' flag has been set, run the scheduler
+    if schedule:
+        result = scheduler.schedule_pods_to_nodes(pods, nodes)
+        scheduler.print_scheduler_output(result, verbose)
+
+if __name__ == '__main__':
+    main()

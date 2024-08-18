@@ -16,7 +16,7 @@ class Node:
         self.cpu_capacity = cpu_capacity
         self.memory_capacity = memory_capacity
 
-def podNodeDecoder(obj):
+def pod_node_decoder(obj):
     if type(obj) == dict:
         keys_set = set(obj.keys())
         if keys_set == set(pod_keys):
