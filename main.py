@@ -10,7 +10,7 @@ def parse_cli_args():
     arg_parser.add_argument('input_file', help='Path to JSON input file')
     arg_parser.add_argument('-s', '--schedule', action='store_true', help='Enable pod scheduling')
     arg_parser.add_argument('-v', '--verbose', action='store_true', help='Show verbose scheduler output')
-    arg_parser.add_argument('--use_requests', action='store_true', help='Schedule pods based on requests instead of limits')
+    arg_parser.add_argument('-r', '--use_requests', action='store_true', help='Schedule pods based on requests instead of limits')
     args = arg_parser.parse_args()
     return args.input_file, args.schedule, args.verbose, args.use_requests
 
