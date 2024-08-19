@@ -8,9 +8,10 @@ Python 3.9 or better is required to run this applcation
 
 Follow these steps to try it out:
 
-- Clone this repository: 
-- Change into the repository directory: 
-- Make a new virtual environment (optional, but strongly recommended)
+- Clone this repository: `git clone https://github.com/ztreinhart/k8s-optimization-demo.git`
+- Change into the repository directory: `cd k8s-optimization-demo`
+- Make a new virtual environment: `python -m venv .venv`
+- Activate the virtual environment: `source .venv/bin/activate` (command may vary based on your shell/OS)
 - Install dependencies: `pip install -r requirements.txt`
 - Run the demo with the sample input file `python main.py sample_input.json`
 
