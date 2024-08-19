@@ -1,7 +1,7 @@
 # Kubernetes Resource Optimization Demo
 
 This repo contains a demonstration/proof-of-concept application for resource scheduling/optimization on Kubernetes.
-This application will optimally schedule kubernetes pods onto nodes based on either resource limits (default) or requests (optional).
+This application will optimally schedule Kubernetes pods onto nodes based on either resource limits (default) or requests (optional).
 
 ## Getting Started
 Python 3.9 or better is required to run this applcation
@@ -28,7 +28,7 @@ Total Memory requests: 4352
 Total Memory limits: 8704
 ```
 
-By default, the program will just summarize the resource requests and limits from the pods in the input file. 
+By default, the program will summarize the resource requests and limits from the pods in the input file, but it will not schedule the pods onto nodes. 
 To run the demo with the scheduler enabled, add the `-s` flag to the command:
 
 `python main.py -s sample_input.json`
@@ -116,7 +116,7 @@ An example of this format is shown below:
   ]
 }
 ```
-A sample input file is given in the repo as `sample_input.json`
+A sample input file is given in the repo as [`sample_input.json`](https://github.com/ztreinhart/k8s-optimization-demo/blob/main/sample_input.json)
 
 ### Solution Strategy
 This demo treats the resource allocation problem as a special case of the 1-D bin-packing problem.
@@ -174,5 +174,5 @@ In this case, the optimization problem would become one of allocating the pods i
 This demo assumes that the information about the pods and nodes is fully available before the solver is run.
 This is known as the offline form of the bin-packing problem.
 In the real world, however, new pods may be submitted to be scheduled at any time.
-Fortunately, the analogy with the bin-packing problem is still apt, as there are online algorithms for solving the problem that can place items into bins (pods onto nodes) as they arrive without complete information.
+Fortunately, the analogy with the bin-packing problem is still apt, and there are online algorithms for solving the problem that can place items into bins (pods onto nodes) optimally as they arrive without complete information.
 
